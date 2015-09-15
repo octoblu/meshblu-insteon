@@ -1,13 +1,26 @@
 {
   "name": "meshblu-insteon",
-  "version": "1.0.1",
+  "repository": "octoblu/meshblu-insteon",
+  "version": "1.1.0",
+  "main": "connector.js",
   "scripts": {
-    "start": "node command.js"
+    "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",
+    "start": "node command.js",
+    "test": "exit 0"
   },
   "dependencies": {
-    "meshblu": "^1.9.0",
-    "skynet-insteon": "^0.1.0"
+    "cheerio": "^0.19.0",
+    "coffee-script": "^1.9.0",
+    "debug": "^2.1.0",
+    "home-controller": "^0.6.0",
+    "meshblu": "^1.22.0",
+    "request": "^2.62.0"
   },
+  "bundledDependencies": [
+    "request",
+    "tar",
+    "fstream"
+  ],
   "keywords": [
     "meshblu-connector",
     "gateblu"
