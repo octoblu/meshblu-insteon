@@ -3,7 +3,7 @@ util           = require 'util'
 {EventEmitter} = require 'events'
 debug          = require('debug')('meshblu-insteon:index')
 {Insteon}      = require 'home-controller'
-DefaultOptions = require './default-options'
+DefaultOptions = require './default-options.coffee'
 
 MESSAGE_SCHEMA =
   type: 'object'
