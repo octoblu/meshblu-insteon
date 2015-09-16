@@ -1,20 +1,37 @@
-sudo: false
 language: node_js
-cache:
-  bundler: true
-  directories:
-    - node_modules
-notifications:
-  flowdock: e7454f5285e7b9ab67009802d5560490
 node_js:
 - '0.10'
+- '0.11'
+before_deploy:
+  - npm install ws browserify coffeeify
+  - mkdir -p deploy/meshblu-insteon/latest
+  - mkdir -p deploy/meshblu-insteon/$TRAVIS_TAG
+  - node_modules/.bin/browserify -t coffeeify -s Connector connector.js > deploy/meshblu-insteon/latest/meshblu-insteon.js
+  - gzip deploy/meshblu-insteon/latest/meshblu-insteon.js
+  - mv deploy/meshblu-insteon/latest/meshblu-insteon.js.gz deploy/meshblu-insteon/latest/meshblu-insteon.js
+  - cp deploy/meshblu-insteon/latest/meshblu-insteon.js deploy/meshblu-insteon/$TRAVIS_TAG/meshblu-insteon.js
 deploy:
-  provider: npm
-  skip_cleanup: true
-  clean_up: false
-  email: serveradmin@octoblu.com
-  api_key:
-    secure: R3kIk48YaIujSfJQ2/sgutcUEc9D+fWnwaRaeteoxUH8TdYF1XkPCFAcMjPK6X7OisUo4xdOw4hqKPlTferWEvzgurEr49j6+gFrGNE5qvpd9hPgBBEarb5tpLsb15ybYVh876Ixov/gDpRxMKAybAGFkkx78lolxrPRQ6NrCjQ=
-  on:
-    tags: true
-    all_branches: true
+  - provider: s3
+    region: us-west-2
+    skip_cleanup: true
+    detect_encoding: true
+    access_key_id: AKIAJH2D5IPIRHYJT5IA
+    secret_access_key:
+      secure: "S1ORCWOI3h+QjJIBYoYnXgnzBCg98yZSEbitNek2/D1wicIGABgSBeU6uJoB8dP0qXVqayrRwB+E7sIO099lkEQXtn3IEpa92FRXeyuT5e0IUxERZH8RynxkmszuDlqAmTqaj9QcatyphkXfLztddvp612NZLPbDAp6E77Xv0UY="
+    bucket: octoblu-cdn
+    local-dir: deploy
+    upload-dir: js
+    on:
+      tags: true
+      all_branches: true
+      node: '0.10'
+  - provider: npm
+    skip_cleanup: true
+    email: serveradmin@octoblu.com
+    api_key:
+      secure: "ccI3gjJRnUZ5opCQtXa3dXcOXZPhXi7FihJdKKPPxOlAU9MhEoyDUA0ihrE9bXXgTOqlxpxiGEooDv/TmI0Jjqx2cD3TuyNN9pemd39Y3t5x9EyKXHGhzRBbOP5JHjlBJX43UG16/Y2aBXk4RbHUAiCmZYzVJNj0j8O/BAP5KHs="
+    clean_up: false
+    on:
+      tags: true
+      all_branches: true
+      node: '0.11'
