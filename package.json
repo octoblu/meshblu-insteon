@@ -1,7 +1,7 @@
 {
   "name": "meshblu-insteon",
   "repository": "octoblu/meshblu-insteon",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "main": "connector.js",
   "scripts": {
     "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",
@@ -22,12 +22,20 @@
     "fstream"
   ],
   "platformDependencies": {
-    "darwin": [],
-    "win32": [],
-    "win64": [],
+    "darwin": [
+      "xcode"
+    ],
+    "win32": [
+      "Python 2.7",
+      "Visual Studio (Express)"
+    ],
+    "win64": [
+      "Python 2.7",
+      "Visual Studio (Express)"
+    ],
     "linux": [],
-    "android": [],
-    "ios": []
+    "android": null,
+    "ios": null
   },
   "keywords": [
     "meshblu-connector",
